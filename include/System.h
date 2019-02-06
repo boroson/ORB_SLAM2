@@ -148,16 +148,21 @@ private:
     // a pose graph optimization and full bundle adjustment (in a new thread) afterwards.
     LoopClosing* mpLoopCloser;
 
+    // Distributed Mapper. With every new keyframe, queries the database for matches with other robots.
+    // When found, performs pose graph optimization and full bundle adjustment
+    DistrMapping mpDistrMapper;
+
     // The viewer draws the map and the current camera pose. It uses Pangolin.
     Viewer* mpViewer;
 
     FrameDrawer* mpFrameDrawer;
     MapDrawer* mpMapDrawer;
 
-    // System threads: Local Mapping, Loop Closing, Viewer.
+    // System threads: Local Mapping, Loop Closing, Distributed Mapping, Viewer.
     // The Tracking thread "lives" in the main execution thread that creates the System object.
     std::thread* mptLocalMapping;
     std::thread* mptLoopClosing;
+    std::thread* mptDistrMapping;
     std::thread* mptViewer;
 
     // Reset flag

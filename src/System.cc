@@ -94,6 +94,10 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     mpLoopCloser = new LoopClosing(mpMap, mpKeyFrameDatabase, mpVocabulary, mSensor!=MONOCULAR);
     mptLoopClosing = new thread(&ORB_SLAM2::LoopClosing::Run, mpLoopCloser);
 
+    //Initialize the Distribute Mapping thread and launch
+    mpDistrMapper = new DistrMapping(mpMap, mpKeyFrameDatabase, mSensor!=MONOCULAR);
+    mptDistrMapping = new thread(&ORB_SLAM2::DistrMapping::Run, mpDistrMapper);
+
     //Initialize the Viewer thread and launch
     if(bUseViewer)
     {
